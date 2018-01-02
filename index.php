@@ -1,6 +1,37 @@
 <?php
-
-
+    //this function converts the offset from seconds into hour and minutes
+    function offset_in_time($offset){
+        //gmp_div_qr() divides two numbers and returns the quotient and remainder as an array
+        $time = gmp_div_qr($offset, 3600);
+         $hours = $time[0];
+         $mins = $time[1];
+            
+            //adds zero at the back +ve hours less than 10
+            if ($hours >= 0 && $hours < 10){
+                $hours = '+0'.$hours;
+            }elseif($hours >= 0 || $mins > 0){
+                $hours = '+'.$hours;
+            }
+            //adds zero at the back +ve hours greater than -10
+            if ($hours < 0 && $hours > -10){
+                $hours = (-1) * $hours;
+                $hours = '-0'.$hours;
+            }
+            //coverts remainders that are still in seconds to minutes
+            if (abs($mins) > 59){
+                $minutes = gmp_div_qr($mins, 60);
+                $mins = $minutes[0];
+                  if($minutes[1] > 0){
+                      $mins = $minutes[0].':'.$minutes[1];
+                  }
+            }
+            //adds zero at the back of seconds less than 10
+            if (abs($mins) > -1 && abs($mins) < 10){
+                $mins = '0'.abs($mins);
+            }
+        
+        return $hours.':'.$mins;
+    }
    
 ?>
 
@@ -10,7 +41,7 @@
 <html>
 
 <head>
-    <title>firstTimeZoneProject</title>
+    <title>Time Checker</title>
     
     <style type="text/css">
         
@@ -53,16 +84,21 @@
             <select name="visitors_timezone" >  
              <?php
                 
+                //instantiate a dateTime object and get the current timeZone from the dateTime object
                 $date = new DateTime('now');
                 $tz = $date->gettimezone();
+                
+                //get an array of all php surpported timeZones and loop through them
                 $timezones = DateTimeZone::ListIdentifiers();
                 $zone = $tz->getName();
 
                   foreach($timezones as $value){
                     $tz = new dateTimeZone($value);
                     $date->setTimezone($tz);
-                    $offset = ($date->getoffset())/3600;
-                    
+                    $offset = $date->getoffset();
+                    $offset_in_time = offset_in_time($offset);
+                      
+                      //on form submittion 
                       if(isset($_POST["submitted"])){
                         $zone = $_POST["visitors_timezone"];
                         $tz = new dateTimeZone($zone);
@@ -73,7 +109,7 @@
                         }  
                     echo "<option value=\"$value\"";
                   if($zone == $value){echo "selected";}
-                   echo ">$value  (UTC/GMT $offset)</option>";
+                   echo ">$value  (UTC/GMT $offset_in_time)</option>";
                   }
                 
                 $time = $date->format('h:i:s A');
