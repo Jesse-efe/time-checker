@@ -38,34 +38,56 @@
 
 <!Doctype html>
 
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    
     <title>Time Checker</title>
     
     <style type="text/css">
         
-        #container {
-                    width: 500px;
-                    height: 350px;
-                    border: 3px black solid;
-                    margin: 40px auto;
+        .container {
+                    margin: 20px auto;
+                    text-align: center;
         }
         
         html {
-              text-align: center;
+              background: url(background.jpg) no-repeat center center fixed; 
+              -webkit-background-size: cover;
+              -moz-background-size: cover;
+              -o-background-size: cover;
+              background-size: cover;
+        }
+        
+        body {
+              background: none;
         }
         
         #time {
-               width: 350px;
-               height: 80px;
-               background-color: yellow;
-               margin: 20px auto;
-               padding: 20px 5px;
+               width: 500px;
+               margin: 10px auto;
+               text-align: center;
         }
         
-        #submit:hover {
-                       background-color: green;
+        #button {
+                       margin: 30px auto;
+        }
+        
+        h1 {
+            color: black;
+            margin-top: 100px;
+            text-align: center;
+        }
+        
+        @media screen and (max-width: 600px) {
+            #time {
+                  width: 70%;
+            }
         }
     
     
@@ -75,14 +97,18 @@
 
 <body>
     
-    <div id='container'>
-        
+    <h1>Please Select A Timezone</h1>
+    
+   <div class="container">
+    
       <form method="Post">
     
-        <h1>Please Select Your Timezone</h1>
-         <label for="select">Timezones:</label>
-            <select name="visitors_timezone" >  
-             <?php
+        
+        <div class="form-group">
+            
+            <label for="exampleFormControlSelect1"></label>
+            <select class="form-control" id="exampleFormControlSelect1" name="visitors_timezone">
+               <?php
                 
                 //instantiate a dateTime object and get the current timeZone from the dateTime object
                 $date = new DateTime('now');
@@ -118,19 +144,29 @@
              ?>   
             </select>
         
-         <p><input type="submit" name="submitted" id="submit"></p>
-          
-    
+          <button type="submit" name="submitted" class="btn btn-primary" id="button">Check Time</button>
+            
+        </div>
+  
       </form>
         
-        <div id="time">
-        
-            <p>The time in your location is <?= $time ?></p>
-            <p>Your locations offset from UTC is <?= $offset/3600 ?> hours</p>
-        
-        </div>
-        
     </div>
+    
+    <div id="time">
+    
+        <div class="alert alert-success" role="alert">
+
+            <p><strong>The time in your location is <?= $time ?></strong></p>
+            <p>Your locations offset from UTC is <?= $offset/3600 ?> hours</p>
+
+        </div>
+    
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+  
 
     
 </body>
