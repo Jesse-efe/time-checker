@@ -141,6 +141,11 @@
                 $time = $date->format('h:i:s A');
                 $offset = $date->getoffset();
                 
+                //explode the users timezone to get the actual location which is the last element in the resulting array
+                $location_array = explode("/", $zone);
+                $location_size = count($location_array);
+                $location_index = ($location_size - 1);
+                
              ?>   
             </select>
         
@@ -156,8 +161,8 @@
     
         <div class="alert alert-success" role="alert">
 
-            <p><strong>The time in your location is <?= $time ?></strong></p>
-            <p>Your locations offset from UTC is <?= $offset/3600 ?> hours</p>
+            <p><strong>The time in <?= $location_array[$location_index] ?> is <?= $time ?></strong></p>
+            <!--<p>Your locations offset from UTC is <?= $offset/3600 ?> hours</p>-->
 
         </div>
     
